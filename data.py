@@ -1,6 +1,7 @@
 import pyautogui
 import keyboard
 import pyscreenshot as ImageGrab
+from deepDino import run_model
 i=0
 is_exit = False
 def exit():
