@@ -1,4 +1,4 @@
-import pyautogui
+# import pyautogui
 import keyboard
 import pyscreenshot as ImageGrab
 from deepDino import run_model
@@ -37,30 +37,25 @@ def data_collection():
 
 def AIDino():
     deepDino = ort.InferenceSession('deepDino.onnx')
-    while (True):
+    for i in range(1):
+    # while(1):
         if is_exit:
             break
-        ss = ImageGrab.grab(bbox=(625, 275, 775, 380))
-        # ss.save(f'./data/screenshot{i}'+ 'UP'+'.png')
-        i+=1
-        # img = cv2.imread('./data/screenshot170UP.png')
+        ss = ImageGrab.grab(bbox=(725, 250, 875, 355))
+        ss.save('screenshot.png')
         img = np.array(ss)
-        img = np.dot(img[...,:3], [0.299, 0.587, 0.114])
+        # img = np.dot(img[...,:3], [0.299, 0.587, 0.114])
         img = cv2.resize(img, dsize=(100, 100), interpolation=cv2.INTER_AREA)
-        # cv2.imwrite('greyscale.png', img)
         img.resize((1, 1, 100, 100))
         img = img/255
         data = json.dumps({'data': img.tolist()})
         data = np.array(json.loads(data)['data']).astype('float32')
         pred,actual = run_model(deepDino, data, 0,["UP", "DOWN", "RIGHT"])
         if pred == "UP":
-            # pyautogui.press('up')
             keyboard.press_and_release('up')
         if pred == "DOWN":
-            # pyautogui.press('down')
             keyboard.press_and_release('down')
         if pred == "RIGHT":
-            # pyautogui.press('right')
             keyboard.press_and_release('right')
 
 if __name__ == "__main__":
